@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ce-calendar-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ce-calendar-web
+  template:
+    metadata:
+      labels:
+        app: ce-calendar-web
+    spec:
+      terminationGracePeriodSeconds: 0
+      containers:
+      - name: ce-calendar-web
+        image: okteto.dev/ce-calendar-web:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 250m
+            memory: "384Mi"
+          limits:
+            cpu: "500m"
+            memory: "1024Mi"
+        ports:
+          - name: http
+            containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ce-calendar-web
+  annotations:
+    dev.okteto.com/auto-ingress: "true"
+  labels:
+    app: ce-calendar-web
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: debug
+      port: 5005
+      protocol: TCP
+      targetPort: 5005
+    - name: hazel
+      port: 5701
+      protocol: TCP
+      targetPort: 5701
+    - name: grpc
+      port: 8124
+      protocol: TCP
+      targetPort: 8124
+    - name: grpc-ssl
+      port: 8224
+      protocol: TCP
+      targetPort: 8224
+  selector:
+    app: ce-calendar-web

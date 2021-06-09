@@ -1,0 +1,23 @@
+name: ce-calendar
+autocreate: true
+# https://github.com/okteto/devenv
+##image: okteto/maven:3-openjdk
+
+# see ./workbench-k8s/devcontainer/Dockerfile
+image: cbonami/jdk-mvn-node:jdk11-mvn3.8-node16.2
+workdir: /usr/src/app
+command: bash
+volumes:
+  - /root/.m2
+sync:
+  - .:/usr/src/app
+forward:
+  - 8080:8080
+  - 5005:5005
+  - 5701:5701
+  - 8124:8124
+  - 8224:8224
+resources:
+  limits:
+    cpu: "1"
+    memory: 2Gi

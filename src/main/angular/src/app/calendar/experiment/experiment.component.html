@@ -1,0 +1,7 @@
+<p>experiment works!</p>
+<button (click)="sendMessage()">Send Message</button>
+<ul>
+  <li *ngFor="let calendar of calendars">
+    {{calendar.author}} - {{calendar.message}}
+  </li>
+</ul>
